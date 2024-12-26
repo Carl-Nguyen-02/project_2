@@ -16,8 +16,6 @@ public class CashierMain extends JFrame {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(400, 300);
-        btnHistory.setPreferredSize(new Dimension(120, 50));
-        btnTransact.setPreferredSize(new Dimension(120, 50));
 
         JLabel title = new JLabel("Cashier Dashboard");
         title.setFont(new Font("Sans Serif", Font.BOLD, 24));
@@ -30,13 +28,15 @@ public class CashierMain extends JFrame {
         panelButton.add(btnHistory);
 
         this.getContentPane().add(panelButton);
+        add(panelButton, BorderLayout.CENTER);
     }
 
     public JButton getTransactionButton() {
         return btnTransact;
     }
 
-    public JButton getProductButton() {
+    public JButton getHistoryButton() {
         return btnHistory;
     }
+
 }

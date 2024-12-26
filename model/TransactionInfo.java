@@ -11,6 +11,25 @@ public class TransactionInfo {
     private double price;
     private double totalCost;
 
+    public static TransactionInfo createFromProduct(Product product, int quantity) {
+        if (product == null || quantity <= 0) {
+            throw new IllegalArgumentException("Invalid product or quantity.");
+        }
+
+        if (quantity > product.getQuantity()) {
+            throw new IllegalArgumentException("Not enough stock available.");
+        }
+
+        TransactionInfo orderLine = new TransactionInfo();
+        orderLine.setProductID(product.getProductID());
+        orderLine.setProductName(product.getName());
+        orderLine.setPrice(product.getPrice());
+        orderLine.setQuantity(quantity);
+        orderLine.calculateCost(); // Automatically calculates cost
+
+        return orderLine;
+    }
+
     public double getTotalCost() {
         return totalCost;
     }
@@ -43,8 +62,8 @@ public class TransactionInfo {
         this.quantity = quantity;
     }
 
-    public void setCost(double cost) {
-        this.totalCost = cost;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public double getCost() {
@@ -55,7 +74,16 @@ public class TransactionInfo {
         return productName;
     }
 
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public double getPrice() {
         return price;
+    }
+
+    private void calculateCost() {
+        this.totalCost = this.price * this.quantity;
     }
 }

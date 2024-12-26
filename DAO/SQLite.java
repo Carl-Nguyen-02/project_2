@@ -42,6 +42,64 @@ public class SQLite {
         return null;
     }
 
+    public boolean productExists(int productID) {
+        String query = "SELECT COUNT(*) FROM Products WHERE ProductID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, productID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // If the count is greater than 0, the product exists
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Return false if the product doesn't exist or if an exception occurs
+    }
+
+    public boolean verifyStock(int productID, int quantity){
+        String query = "SELECT Stock FROM Products WHERE ProductID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, productID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int currentStock = rs.getInt("stock");
+                return currentStock >= quantity;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Product getProductByID(int productId) {
+        String query = "SELECT * FROM Products WHERE ProductID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void reduceProductStock(int productId, int quantity) {
+        String query = "UPDATE Products SET stock = stock - ? WHERE ProductID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, productId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     }
 

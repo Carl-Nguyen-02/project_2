@@ -1,36 +1,30 @@
-package view.Cashier;
-
-import Application.Application;
+package view.Customer;
 
 import javax.swing.*;
 import java.awt.*;
 
 import view.Layout.TransactionLayout;
 
-public class CashierOrderView extends JFrame {
-
+public class CustomerOrderView extends JFrame{
     private TransactionLayout TransactionDetail;
     private JButton addProduct;
     private JButton removeProduct;
     private JButton finishAndPay;
-    private JButton addCustomer;
     private JButton clearTransaction;
     private JComboBox<String> paymentMethod;
     private JLabel totalPriceLabel;
 
-    public CashierOrderView() {
-        setTitle("Cashier Transaction Screen");
+    public CustomerOrderView() {
+        setTitle("Customer Order Screen");
         setSize(900, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         TransactionDetail = new TransactionLayout();
-
         addProduct = new JButton("Add/Edit Product");
         removeProduct = new JButton("Remove Product");
         finishAndPay = new JButton("Finish and Pay");
         clearTransaction = new JButton("Clear Transaction");
-        addCustomer = new JButton("Add Customer");
 
         String[] paymentOptions = {"Choose an option", "Cash", "E-wallet", "Debit Card"};
         paymentMethod = new JComboBox<>(paymentOptions);
@@ -42,7 +36,6 @@ public class CashierOrderView extends JFrame {
         buttonProductPanel.setPreferredSize(new Dimension(600, 100));
         buttonProductPanel.add(addProduct);
         buttonProductPanel.add(removeProduct);
-        buttonProductPanel.add(addCustomer);
         buttonProductPanel.add(finishAndPay);
         buttonProductPanel.add(clearTransaction);
         setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -60,7 +53,7 @@ public class CashierOrderView extends JFrame {
         centerPanel.add(buttonProductPanel); // Add button panel to center panel
         centerPanel.add(dropdownPanel);      // Add dropdown panel to center panel
 
-        add(centerPanel); // Add center panel to frame
+        add(centerPanel);
     }
 
     public JButton getBtnProd() {
@@ -75,9 +68,6 @@ public class CashierOrderView extends JFrame {
     public JButton getBtnPay() {
         return finishAndPay;
     }
-    public JButton getCusBtn() {
-        return addCustomer;
-    }
     public JComboBox<String> getPaymentMethod() {
         return paymentMethod;
     }
@@ -87,5 +77,4 @@ public class CashierOrderView extends JFrame {
     public void setTotalPrice(double totalPrice) {
         totalPriceLabel.setText(String.format("Total Price: $%.2f", totalPrice));
     }
-
 }

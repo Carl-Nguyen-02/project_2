@@ -4,112 +4,101 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transaction {
-    private int productID;
-    private int orderID;
-    private double quantity;
-    private double cost;
-    private int employeeID;
-    private int buyerID;
-    private String date;
+    private String orderID;
+    private String customerID;  // Optional: Nullable for orders without a customer
+    private String customerName;  // Optional: Useful if customer info exists
+    private String orderDate;
     private List<TransactionInfo> lines;
+    private double totalCost;
+    private String paymentMethod;
 
-    public Transaction(){
-        lines = new ArrayList<>();
+    private String sourceType;  // "customer" or "cashier"
+    private String sourceID;    // The ID of the customer or cashier who created the order
+
+    // Getters and Setters
+    public String getCustomerID() {
+        return customerID;
     }
 
-    public double getQuantity() {
-        return quantity;
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
     }
 
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.cost = totalCost;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public double getTotalCost() {
-        return cost;
+    public String getSourceType() {
+        return sourceType;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
     }
 
-    public int getOrderID() {
+    public String getSourceID() {
+        return sourceID;
+    }
+
+    public void setSourceID(String sourceID) {
+        this.sourceID = sourceID;
+    }
+
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
-    public int getProductID() {
-        return productID;
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getBuyerID() {
-        return buyerID;
-    }
-
-    public void setBuyerID(int buyerID) {
-        this.buyerID = buyerID;
-    }
-
-    public int getEmployeeID() {
-        return employeeID;
-    }
-
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
-    }
-
-    public void addLine(TransactionInfo line) {
-        lines.add(line);
-    }
-
-    public void removeLine(TransactionInfo line) {
-        lines.remove(line);
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public List<TransactionInfo> getLines() {
         return lines;
     }
 
-    public int getLineIndex(TransactionInfo line) {
-        return lines.indexOf(line);
+    public void setLines(List<TransactionInfo> lines) {
+        this.lines = lines;
+        calculateTotalCost();
     }
 
-    public boolean hasProduct(int productID) {
-        for(TransactionInfo line : lines) {
-            if(line.getProductID() == productID) {
-                return true;
-            }
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    private void calculateTotalCost() {
+        this.totalCost = 0;
+        for (TransactionInfo line : lines) {
+            this.totalCost += line.getCost();
         }
-        return false;
     }
 
-    public int getLineFromID(int productID){
-        for(TransactionInfo line : lines) {
-            if(line.getProductID() == productID) {
-                return lines.indexOf(line);
-            }
-        }
-        return -1;
+    public void setTotalCost(Double totalCost) {
+        this.totalCost=totalCost;
+
     }
 
+
+    public void addOrderLine(TransactionInfo fromProduct) {
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
 }

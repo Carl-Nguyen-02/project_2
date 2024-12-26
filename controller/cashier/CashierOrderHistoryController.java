@@ -1,9 +1,8 @@
-package controller.customer;
+package controller.cashier;
 
 import DAO.MongoDB;
-import DAO.SQLite;
 import model.User;
-import view.Customer.CustomerOrderHistoryView;
+import view.Cashier.CashierOrderHistoryView;
 
 import javax.swing.*;
 import org.bson.Document;
@@ -15,17 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CustomerHistoryController {
-    private CustomerOrderHistoryView view;
+public class CashierOrderHistoryController {
+    private CashierOrderHistoryView view;
     private MongoDB mongoDB;
-    private User customer;
+    private User cashier;
 
-    public CustomerHistoryController(User customer, SQLite sqLite, MongoDB mongoDB){
-        this.customer = customer;
+    public CashierOrderHistoryController(User cashier, MongoDB mongoDB) {
+        this.cashier = cashier;
         this.mongoDB = mongoDB;
 
         // Initialize the view
-        view = new CustomerOrderHistoryView();
+        view = new CashierOrderHistoryView();
         view.setVisible(true);
 
         // Add action listeners
@@ -41,9 +40,9 @@ public class CustomerHistoryController {
 
             // Build filter for payment method
             Bson paymentFilter = paymentMethod.equals("All")
-                    ? Filters.eq("sourceID", String.valueOf(customer.getUserID())) // Only show cashier's transactions
+                    ? Filters.eq("sourceID", String.valueOf(cashier.getUserID())) // Only show cashier's transactions
                     : Filters.and(
-                    Filters.eq("sourceID", String.valueOf(customer.getUserID())),
+                    Filters.eq("sourceID", String.valueOf(cashier.getUserID())),
                     Filters.eq("paymentMethod", paymentMethod)
             );
 
@@ -57,7 +56,7 @@ public class CustomerHistoryController {
             };
 
             // Fetch transactions from MongoDB
-            List<Document> transactions = mongoDB.getCashierHistory(customer)
+            List<Document> transactions = mongoDB.getCashierHistory(cashier)
                     .find(paymentFilter)
                     .sort(sort)
                     .into(new ArrayList<>());
@@ -90,7 +89,7 @@ public class CustomerHistoryController {
             }
 
             // Fetch the order from MongoDB
-            Document order = mongoDB.getCashierHistory(customer).find(Filters.eq("orderID", orderID)).first();
+            Document order = mongoDB.getCashierHistory(cashier).find(Filters.eq("orderID", orderID)).first();
 
             if (order != null) {
                 // Extract and display order lines
@@ -117,3 +116,4 @@ public class CustomerHistoryController {
         }
     }
 }
+

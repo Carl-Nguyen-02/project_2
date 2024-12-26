@@ -1,15 +1,20 @@
 package controller.customer;
 
-import DAO.Redis;
-import DAO.SQLite;
 import DAO.MongoDB;
-import model.User;
+import DAO.SQLite;
+import DAO.Redis;
+import model.*;
 import view.Customer.CustomerMain;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CustomerMainScreenController {
+public class CustomerMainScreenController implements ActionListener {
     private CustomerMain view;
     private User customer;
     private MongoDB mongoDB;
@@ -25,21 +30,19 @@ public class CustomerMainScreenController {
         // Initialize the view
         this.view = new CustomerMain();
         this.view.setVisible(true);
-//        addListeners();
+
+        this.view.getBtnHistory().addActionListener(this);
+        this.view.getBtnOrder().addActionListener(this);
     }
 
-    private void addListeners(){
-        // Add action listeners to buttons
-//        view.getBtnHistory().addActionListener(this);
-//        view.getBtnOrder().addActionListener(this);
-    }
 
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == view.getBtnOrder()) {
-//            new CustomerOrderController(customer.getCustomer(), sqlite, mongoDB); // Open new order creation
-//        } else if (e.getSource() == view.getBtnHistory()) {
-//            new CustomerHistoryController(customer.getCustomer(), sqlite, mongoDB); // Open product check
-//        }
-//    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == view.getBtnOrder()) {
+            new CustomerOrderController(customer, sqlite, mongoDB); // Open new order creation
+        } else if (e.getSource() == view.getBtnHistory()) {
+            new CustomerHistoryController(customer, sqlite, mongoDB); // Open product check
+        }
+    }
 }
